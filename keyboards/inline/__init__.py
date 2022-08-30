@@ -1,8 +1,3 @@
-from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
+from . import menu, calendar
 
-
-start_buttons = InlineKeyboardMarkup()
-start_buttons.add(InlineKeyboardButton(text='Поиск самых дешевых отелей', callback_data='lowprice'))
-
-date_buttons = InlineKeyboardMarkup()
 
