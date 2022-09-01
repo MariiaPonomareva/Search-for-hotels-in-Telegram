@@ -1,3 +1,5 @@
+import datetime
+
 from telebot.types import Message, CallbackQuery
 from loader import bot
 from states.search import UserSearchState
@@ -56,30 +58,30 @@ def city(message):
     bot.send_message(message.from_user.id, 'Уточните, пожалуйста:', reply_markup=city_markup(message.text))
 
 
-@bot.callback_query_handler(func=lambda call: True)
-def get_city(callback_query: CallbackQuery) -> None:
-    with bot.retrieve_data() as data:
-        data['city_id'] = callback_query.data
-        bot.answer_callback_query(callback_query.id)
-    calendar, step = DetailedTelegramCalendar().build()
-    bot.send_message(callback_query.from_user.id, f'Теперь выберите дату заезда: {LSTEP[step]}', reply_markup=calendar)
-    bot.set_state(callback_query.from_user.id, UserSearchState.start_date)
+@bot.callback_query_handler(func=lambda call: call.data.isdigit())
+def get_city(call) -> None:
+    with bot.retrieve_data(user_id=call.from_user.id) as data:
+        data['city_id'] = call.text
+        #bot.answer_callback_query(callback_query.id)
+    calendar, step = DetailedTelegramCalendar(min_date=datetime.date.today()).build()
+    bot.send_message(call.from_user.id, f'Теперь выберите дату заезда: {LSTEP[step]}', reply_markup=calendar)
+    bot.set_state(call.from_user.id, UserSearchState.start_date, call.chat.id)
 
 
-@bot.callback_query_handler(func=DetailedTelegramCalendar.func(), state=UserSearchState.start_date)
-def get_start_date(c, callback_query):
-    result, key, step = DetailedTelegramCalendar().process(c.data)
+@bot.callback_query_handler(DetailedTelegramCalendar().func())
+def get_start_date(call):
+    result, key, step = DetailedTelegramCalendar().process(call.data)
     if not result and key:
         bot.edit_message_text(f"Select {LSTEP[step]}",
-                              c.message.chat.id,
-                              c.message.message_id,
+                              call.message.chat.id,
+                              call.message.message_id,
                               reply_markup=key)
     elif result:
-        bot.edit_message_text(f"You selected {result}",
-                              c.callback_query.chat.id,
-                              c.callback_query.message_id)
+        bot.edit_message_text(f"Вы выбрали: {result}",
+                              call.message.chat.id,
+                              call.message.message_id)
 
-    with bot.retrieve_data() as data:
-        data['start_date'] = result
-    bot.set_state(callback_query.from_user.id, UserSearchState.end_date)
+    with bot.retrieve_data(user_id=call.from_user.id) as data:
+        data['start_date'] = result.text
+    bot.set_state(call.from_user.id, UserSearchState.end_date, call.chat.id)
 
