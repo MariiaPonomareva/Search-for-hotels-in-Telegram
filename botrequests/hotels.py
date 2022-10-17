@@ -211,7 +211,7 @@ def generate_hotels_descriptions(hotels: dict, msg: Message) -> tuple[list, list
             f"{_('hotel', msg)}: {hotel.get('name')}\n"
             f"{_('price', msg)}: {hotel['price']} {curr_user.currency}\n"
             f"{_('address', msg)}: {hotel.get('address')}\n"
-            f"{_('site', msg)}: 'URL:' https://ru.hotels.com/ho{hotel['id']}\n"
+            f"{_('site', msg)}: 'URL:' https://hotels.com/ho{hotel['id']}\n"
         )
         if hotel.get('photos'):
             hotels_info.append({'photos': hotel.get('photos'), 'message': message})

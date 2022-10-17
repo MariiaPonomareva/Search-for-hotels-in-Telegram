@@ -233,6 +233,10 @@ vocabulary = {
             'ru': 'Выберите',
             'en': 'Choose'
     },
+    'chosen': {
+            'ru': 'Вы выбрали ',
+            'en': 'You have chosen '
+    },
     'site': {
             'ru': 'Сайт',
             'en': 'Website'

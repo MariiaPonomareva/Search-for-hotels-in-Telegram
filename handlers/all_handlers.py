@@ -126,7 +126,7 @@ def get_history(message: Message) -> None:
     logger.info(f'"history" command is called')
 
     curr_history = SearchHistory.select().where(SearchHistory.user_id == message.from_user.id).get()
-    if len(curr_history.history.split(';')) < 1:
+    if curr_history.history == ';':
         bot.send_message(message.chat.id, _('no_history', message))
     else:
         bot.send_message(message.chat.id, curr_history.history.replace(';', ''))
@@ -149,12 +149,12 @@ def cal(c: CallbackQuery) -> None:
     state = curr_user.state
     result, key, step = DetailedTelegramCalendar(locale=locale, min_date=date.today()).process(c.data)
     if not result and key:
-        bot.edit_message_text(f"Выберите:",
+        bot.edit_message_text(_('choose', c),
                               c.message.chat.id,
                               c.message.message_id,
                               reply_markup=key)
     elif result:
-        bot.edit_message_text(f"Вы выбрали {result}",
+        bot.edit_message_text(_('chosen', c) + f" {result}",
                               c.message.chat.id,
                               c.message.message_id)
         if state == 5:

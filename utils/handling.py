@@ -258,9 +258,13 @@ def add_user(msg: Message) -> None:
     lang = msg.from_user.language_code
     if lang != 'ru':
         lang = 'en'
+    if msg.from_user.username:
+        username = msg.from_user.username
+    else:
+        username = msg.from_user.full_name
     User.create(
         id=user_id,
-        username=msg.from_user.username,
+        username=username,
         language=lang,
         state=0,
         locale=locales[lang],
@@ -278,7 +282,7 @@ def add_user(msg: Message) -> None:
     )
     SearchHistory.create(
         user_id=user_id,
-        history=''
+        history=';'
     )
 
 
