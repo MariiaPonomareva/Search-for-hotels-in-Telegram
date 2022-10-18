@@ -5,14 +5,13 @@ from dotenv import load_dotenv
 from loguru import logger
 from datetime import datetime
 from telebot.types import Message
+from config_data.config import X_RAPIDAPI_KEY
 
 from utils.handling import hotel_price, _, hotel_address, \
     hotel_rating, request_photos
 from database.bot_database import User, SearchHistory
 
 load_dotenv()
-
-X_RAPIDAPI_KEY = os.getenv('RAPIDAPI_KEY')
 
 
 def get_hotels(msg: Message, parameters: dict) -> [list, None]:

@@ -3,7 +3,7 @@ import os
 import telebot
 from telegram_bot_calendar import DetailedTelegramCalendar
 from loader import bot
-from telebot.types import Message, CallbackQuery
+from telebot.types import Message, CallbackQuery, InputMediaPhoto
 from dotenv import load_dotenv
 from loguru import logger
 from datetime import date
@@ -322,8 +322,10 @@ def hotels_list(msg: Message, lang: str = None) -> None:
         bot.send_message(chat_id, f"{_('hotels_found', msg)}: {quantity}")
         for hotel in hotels:
             if hotel.get('photos'):
+                media = []
                 for i_photo in hotel['photos']:
-                    bot.send_photo(chat_id, photo=i_photo, parse_mode='html')
+                    media.append(InputMediaPhoto(media=i_photo))
+                bot.send_media_group(chat_id, media)
             bot.send_message(chat_id, hotel['message'], lang)
     curr_user.photo_amt = 0
     curr_user.save()

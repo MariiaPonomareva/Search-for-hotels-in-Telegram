@@ -7,6 +7,7 @@ from telegram_bot_calendar import DetailedTelegramCalendar
 from telebot.types import Message
 from loguru import logger
 from loader import bot
+from config_data.config import X_RAPIDAPI_KEY
 
 from database.bot_database import User, SearchHistory
 from translations.translations import vocabulary
@@ -194,7 +195,7 @@ def request_photos(hotel: dict, amt: int) -> list[str]:
         querystring = {"id": hotel.get('id')}
 
         headers = {
-            "X-RapidAPI-Key": "b144609875msh13fbef50261efd2p1d1328jsn2ed7a53d275a",
+            "X-RapidAPI-Key": X_RAPIDAPI_KEY,
             "X-RapidAPI-Host": "hotels4.p.rapidapi.com"
         }
 

@@ -5,12 +5,11 @@ import requests
 from telebot.types import Message
 from loguru import logger
 from dotenv import load_dotenv
+from config_data.config import X_RAPIDAPI_KEY
 
 from database.bot_database import User
 
 load_dotenv()
-
-X_RAPIDAPI_KEY = os.getenv('RAPIDAPI_KEY')
 
 
 def exact_location(data: dict, loc_id: str) -> tuple[str, str]:
