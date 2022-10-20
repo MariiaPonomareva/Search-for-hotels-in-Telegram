@@ -129,7 +129,7 @@ def get_history(message: Message) -> None:
     if curr_history.history == ';':
         bot.send_message(message.chat.id, _('no_history', message))
     else:
-        bot.send_message(message.chat.id, curr_history.history.replace(';', ''))
+        bot.send_message(message.chat.id, curr_history.history.replace(';', ''), disable_web_page_preview=True)
 
 
 @bot.callback_query_handler(func=DetailedTelegramCalendar.func())
